@@ -9,6 +9,8 @@ namespace SharpPwned.NET
 {
     public class HaveIBeenPwnedRestClient
     {
+        private static readonly HttpClient client = new HttpClient();
+
         private readonly string URL = @"https://haveibeenpwned.com/api/v2";
 
         public HaveIBeenPwnedRestClient()
@@ -105,21 +107,21 @@ namespace SharpPwned.NET
             {
                 return false;
             }
-            
+
         }
 
         private async Task<Response> GETRequestAsync(string parameters)
         {
             Response RestResponse = new Response();
-            Uri request = new Uri($"{URL}/{parameters}");
+            Uri uri = new Uri($"{URL}/{parameters}");
 
-            HttpClient client = new HttpClient();
+            HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, uri);
             HttpResponseMessage response = null;
-            client.DefaultRequestHeaders.TryAddWithoutValidation("User-Agent", "SharpPwned.NET");
+            request.Headers.TryAddWithoutValidation("User-Agent", "SharpPwned.NET");
 
             try
             {
-                response = await client.GetAsync(request);
+                response = await client.SendAsync(request);
                 response.EnsureSuccessStatusCode();
 
                 string responseBody = await response.Content.ReadAsStringAsync();
@@ -128,8 +130,6 @@ namespace SharpPwned.NET
                 RestResponse.Body = responseBody;
                 RestResponse.StatusCode = statusCode;
 
-                //Must dispose
-                client.Dispose();
                 return RestResponse;
             }
             catch(HttpRequestException e)
