@@ -1,6 +1,8 @@
 ﻿using System;
 using System.Net.Http;
+using System.Text;
 using System.Threading.Tasks;
+using System.Security.Cryptography;
 using SharpPwned.NET.Model;
 using Newtonsoft.Json;
 using System.Collections.Generic;
@@ -12,6 +14,7 @@ namespace SharpPwned.NET
         private static readonly HttpClient client = new HttpClient();
 
         private readonly string URL = @"https://haveibeenpwned.com/api/v2";
+        private readonly string passwordRangeURL = @"https://api.pwnedpasswords.com";
 
         public HaveIBeenPwnedRestClient()
         {
@@ -96,10 +99,29 @@ namespace SharpPwned.NET
 
         public async Task<bool> IsPasswordPwned(string password)
         {
-            string api = "pwnedpassword";
-            var response = await GETRequestAsync($"{api}/{password}");
+            // Compute the SHA1 hash of the string
+            SHA1 sha1 = SHA1.Create();
+            byte[] byteString = Encoding.UTF8.GetBytes(password);
+            byte[] hashBytes = sha1.ComputeHash(byteString);
+            string hashString = "";
+            StringBuilder sb = new StringBuilder();
+            foreach (byte b in hashBytes)
+            {
+                sb.Append(b.ToString("X2"));
+            }
+            hashString = sb.ToString();
 
-            if(response.StatusCode == "OK")
+            // Break the SHA1 into two pieces:
+            //   1) the first five characters of the hash
+            //   2) the rest of the hash
+            string hashFirstFive = hashString.Substring(0, 5);
+            string hashLeftover = hashString.Substring(5, hashString.Length - 5);
+
+            string api = "range";
+            var response = await GETRequestAsync($"{api}/{hashFirstFive}", passwordRangeURL);
+            var responseContainsHash = response.Body.Contains(hashLeftover);
+
+            if(responseContainsHash)
             {
                 return true;
             }
@@ -112,8 +134,15 @@ namespace SharpPwned.NET
 
         private async Task<Response> GETRequestAsync(string parameters)
         {
+            Response response = await GETRequestAsync(parameters, URL);
+            return response;
+
+        }
+
+        private async Task<Response> GETRequestAsync(string parameters, string overrideURL)
+        {
             Response RestResponse = new Response();
-            Uri uri = new Uri($"{URL}/{parameters}");
+            Uri uri = new Uri($"{overrideURL}/{parameters}");
 
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, uri);
             HttpResponseMessage response = null;
