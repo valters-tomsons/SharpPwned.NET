@@ -136,7 +136,6 @@ namespace SharpPwned.NET
         {
             Response response = await GETRequestAsync(parameters, URL);
             return response;
-
         }
 
         private async Task<Response> GETRequestAsync(string parameters, string overrideURL)
