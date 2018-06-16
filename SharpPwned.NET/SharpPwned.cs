@@ -15,10 +15,16 @@ namespace SharpPwned.NET
 
         private readonly string URL = @"https://haveibeenpwned.com/api/v2";
         private readonly string passwordRangeURL = @"https://api.pwnedpasswords.com";
+        private readonly string userAgent;
 
-        public HaveIBeenPwnedRestClient()
+        public HaveIBeenPwnedRestClient(string userAgent = null)
         {
+            this.userAgent = userAgent;
 
+            if (string.IsNullOrWhiteSpace(this.userAgent))
+            {
+                this.userAgent = "SharpPwned.NET";
+            }
         }
 
         public async Task<List<Paste>> GetPasteAccount(string account)
@@ -145,7 +151,7 @@ namespace SharpPwned.NET
 
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, uri);
             HttpResponseMessage response = null;
-            request.Headers.TryAddWithoutValidation("User-Agent", "SharpPwned.NET");
+            request.Headers.TryAddWithoutValidation("User-Agent", userAgent);
 
             try
             {
