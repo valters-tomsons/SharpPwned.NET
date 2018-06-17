@@ -38,10 +38,8 @@ namespace SharpPwned.NET
                 var allPastes = JsonConvert.DeserializeObject<List<Paste>>(body);
                 return allPastes;
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
         }
 
         public async Task<Breach> GetBreach(string site)
@@ -55,10 +53,8 @@ namespace SharpPwned.NET
                 var breach = JsonConvert.DeserializeObject<Breach>(body);
                 return breach;
             }
-            else
-            {
-                return null;
-            }
+
+            return null;
 
         }
 
@@ -74,10 +70,8 @@ namespace SharpPwned.NET
                 AllBreaches = JsonConvert.DeserializeObject<List<Breach>>(body);
                 return AllBreaches;
             }
-            else
-            {
-                return AllBreaches;
-            }
+
+            return AllBreaches;
 
         }
 
@@ -94,10 +88,8 @@ namespace SharpPwned.NET
                 AllBreaches = JsonConvert.DeserializeObject<List<Breach>>(body);
                 return AllBreaches;
             }
-            else
-            {
-                return AllBreaches;
-            }
+
+            return AllBreaches;
         }
 
         public async Task<bool> IsPasswordPwned(string password)
