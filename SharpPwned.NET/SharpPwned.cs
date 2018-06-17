@@ -32,12 +32,10 @@ namespace SharpPwned.NET
             string api = "pasteaccount";
             var response = await GETRequestAsync($"{api}/{account}");
 
-            List<Paste> allPastes = new List<Paste>();
-
             if (response.StatusCode == "OK")
             {
                 string body = response.Body;
-                allPastes = JsonConvert.DeserializeObject<List<Paste>>(body);
+                var allPastes = JsonConvert.DeserializeObject<List<Paste>>(body);
                 return allPastes;
             }
             else
@@ -50,12 +48,11 @@ namespace SharpPwned.NET
         {
             string api = "breach";
             var response = await GETRequestAsync($"{api}/{site}");
-            Breach breach = new Breach();
 
             if (response.StatusCode == "OK")
             {
                 string body = response.Body;
-                breach = JsonConvert.DeserializeObject<Breach>(body);
+                var breach = JsonConvert.DeserializeObject<Breach>(body);
                 return breach;
             }
             else
@@ -127,14 +124,7 @@ namespace SharpPwned.NET
             var response = await GETRequestAsync($"{api}/{hashFirstFive}", passwordRangeURL);
             var responseContainsHash = response.Body.Contains(hashLeftover);
 
-            if(responseContainsHash)
-            {
-                return true;
-            }
-            else
-            {
-                return false;
-            }
+            return responseContainsHash;
 
         }
 
@@ -169,7 +159,7 @@ namespace SharpPwned.NET
             catch(HttpRequestException e)
             {
                 RestResponse.Body = null;
-                RestResponse.StatusCode = response.StatusCode.ToString();
+                if (response != null) RestResponse.StatusCode = response.StatusCode.ToString();
                 RestResponse.HttpException = e.Message;
                 return RestResponse;
             }
