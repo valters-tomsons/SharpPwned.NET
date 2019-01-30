@@ -75,10 +75,15 @@ namespace SharpPwned.NET
 
         }
 
-        public async Task<List<Breach>> GetAccountBreaches(string account)
+        public async Task<List<Breach>> GetAccountBreaches(string account, bool? includeUnverified = false)
         {
             string api = "breachedaccount";
-            var response = await GETRequestAsync($"{api}/{account}");
+            string includeUnverifiedQueryString = string.Empty;
+            if(includeUnverified.HasValue && includeUnverified.Value)
+            {
+                includeUnverifiedQueryString = "?includeUnverified=true";
+            }
+            var response = await GETRequestAsync($"{api}/{account}{includeUnverifiedQueryString}");
 
             List<Breach> AllBreaches = new List<Breach>();
 
