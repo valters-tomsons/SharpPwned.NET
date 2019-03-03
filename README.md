@@ -26,5 +26,5 @@ GetAccountBreaches will return a list Breach objects, each Breach represents a s
 This project targets [.NET Standard 1.4](https://docs.microsoft.com/en-us/dotnet/standard/library)
 
 # Nuget Package:
-  PM> Install-Package Install-Package SharpPwned.NET
+  PM> Install-Package SharpPwned.NET
 
