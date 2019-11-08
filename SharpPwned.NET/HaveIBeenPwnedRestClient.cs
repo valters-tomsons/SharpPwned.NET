@@ -6,6 +6,7 @@ using System.Security.Cryptography;
 using SharpPwned.NET.Model;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using SharpPwned.NET.Interfaces;
 
 namespace SharpPwned.NET
 {

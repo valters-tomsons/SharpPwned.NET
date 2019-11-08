@@ -2,7 +2,7 @@
 using System.Threading.Tasks;
 using SharpPwned.NET.Model;
 
-namespace SharpPwned.NET
+namespace SharpPwned.NET.Interfaces
 {
     public interface IHaveIBeenPwnedRestClient
     {
