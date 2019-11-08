@@ -9,7 +9,7 @@ using System.Collections.Generic;
 
 namespace SharpPwned.NET
 {
-    public class HaveIBeenPwnedRestClient
+    public class HaveIBeenPwnedRestClient : IHaveIBeenPwnedRestClient
     {
         private static readonly HttpClient client = new HttpClient();
 
