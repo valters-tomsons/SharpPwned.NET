@@ -6,10 +6,11 @@ using System.Security.Cryptography;
 using SharpPwned.NET.Model;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using SharpPwned.NET.Interfaces;
 
 namespace SharpPwned.NET
 {
-    public class HaveIBeenPwnedRestClient
+    public class HaveIBeenPwnedRestClient : IHaveIBeenPwnedRestClient
     {
         private static readonly HttpClient client = new HttpClient();
 
