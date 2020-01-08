@@ -14,14 +14,15 @@ namespace SharpPwned.NET
     {
         private static readonly HttpClient client = new HttpClient();
 
-        private readonly string URL = @"https://haveibeenpwned.com/api/v2";
-        private readonly string passwordRangeURL = @"https://api.pwnedpasswords.com";
+        private readonly string URL = "https://haveibeenpwned.com/api/v3";
+        private readonly string passwordRangeURL = "https://api.pwnedpasswords.com";
         private readonly string userAgent;
+        private readonly string hibpApiKey;
 
-        public HaveIBeenPwnedRestClient(string userAgent = null)
+        public HaveIBeenPwnedRestClient(string hibpApiKey, string userAgent = null)
         {
             this.userAgent = userAgent;
-
+            this.hibpApiKey = hibpApiKey;
             if (string.IsNullOrWhiteSpace(this.userAgent))
             {
                 this.userAgent = "SharpPwned.NET";
@@ -76,13 +77,13 @@ namespace SharpPwned.NET
 
         }
 
-        public async Task<List<Breach>> GetAccountBreaches(string account, bool? includeUnverified = false)
+        public async Task<List<Breach>> GetAccountBreaches(string account, bool? includeUnverified = true)
         {
             string api = "breachedaccount";
             string includeUnverifiedQueryString = string.Empty;
-            if(includeUnverified.HasValue && includeUnverified.Value)
+            if(includeUnverified.HasValue && !includeUnverified.Value)
             {
-                includeUnverifiedQueryString = "?includeUnverified=true";
+                includeUnverifiedQueryString = "?includeUnverified=false";
             }
             var response = await GETRequestAsync($"{api}/{account}{includeUnverifiedQueryString}");
 
@@ -138,6 +139,8 @@ namespace SharpPwned.NET
             Uri uri = new Uri($"{overrideURL}/{parameters}");
 
             HttpRequestMessage request = new HttpRequestMessage(HttpMethod.Get, uri);
+            request.Headers.Add ("hibp-api-key", hibpApiKey);
+
             HttpResponseMessage response = null;
             request.Headers.TryAddWithoutValidation("User-Agent", userAgent);
 
