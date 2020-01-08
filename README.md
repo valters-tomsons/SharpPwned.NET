@@ -7,7 +7,7 @@ HaveIBeenPwned.com API version 2 was [superseded](https://haveibeenpwned.com/API
 Breaking changes were introduced, which made version 2 unusable.
 
 Main change was introduction of API key because of
-continuous abuse ([Troy's blog post]((https://www.troyhunt.com/authentication-and-the-have-i-been-pwned-api/))) of the HaveIBeenPwned service.
+continuous abuse ([Troy's blog post](https://www.troyhunt.com/authentication-and-the-have-i-been-pwned-api/)) of the HaveIBeenPwned service.
 
 Paid API key can be obtained [here](https://haveibeenpwned.com/API/Key). 
 
