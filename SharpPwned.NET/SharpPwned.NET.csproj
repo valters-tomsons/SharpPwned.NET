@@ -8,6 +8,7 @@
     <RepositoryUrl>https://github.com/FaithLV/SharpPwned.NET</RepositoryUrl>
     <PackageTags>have i been pwned account dump</PackageTags>
     <PackageRequireLicenseAcceptance>false</PackageRequireLicenseAcceptance>
+    <GeneratePackageOnBuild>true</GeneratePackageOnBuild>
   </PropertyGroup>
 
   <ItemGroup>
