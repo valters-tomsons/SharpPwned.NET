@@ -15,7 +15,7 @@ Usage:
 
 ```c#
 var client = new HaveIBeenPwnedRestClient(yourApiKey);
-var response = client.IsPasswordPwned("hunter2").Result;
+var response = await client.IsPasswordPwned("hunter2");
 Console.WriteLine(response);
 ```
 This will return a bool value, depending on if the password is indeed pwned.
@@ -24,7 +24,7 @@ This will return a bool value, depending on if the password is indeed pwned.
 using SharpPwned.NET.Model;
 
 var client = new HaveIBeenPwnedRestClient(yourApiKey);
-var response = client.GetAccountBreaches("gaben@valvesoftware.com").Result;
+var response = await client.GetAccountBreaches("gaben@valvesoftware.com");
 foreach(Breach x in response)
 	{
 		Console.WriteLine(x.Domain);
@@ -32,7 +32,7 @@ foreach(Breach x in response)
 ```
 GetAccountBreaches will return a list Breach objects, each Breach represents a single breached site and holds values as Name, Domain, Account Count etc. For full list of values, visit [API Documentation](https://haveibeenpwned.com/api/v3).
 
-This project targets [.NET Standard 1.4](https://docs.microsoft.com/en-us/dotnet/standard/library)
+This project targets [.NET Standard 2.1](https://docs.microsoft.com/en-us/dotnet/standard/library)
 
 # Nuget Package:
   PM> Install-Package SharpPwned.NET
